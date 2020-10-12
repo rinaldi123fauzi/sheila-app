@@ -1,0 +1,29 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2>Form personil_detail</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="">Home</a>
+      </li>
+      <li>
+        <a href="<%= personil_details_url %>">List</a>
+      </li>
+      <li class="active">
+        <strong>Form</strong>
+      </li>
+    </ol>
+  </div>
+</div>
+<br>
+<div id="content">
+  <%= render 'form' %>
+</div>
+<script type="text/javascript" charset="utf-8">
+    $(function() {
+        return $('.chosen-select').chosen({
+            allow_single_deselect: true,
+            no_results_text: 'No results matched',
+            width: '512px'
+        });
+    });
+</script>

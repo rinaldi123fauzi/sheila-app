@@ -1,0 +1,2 @@
+class HistoryTimesheet < ApplicationRecord
+end

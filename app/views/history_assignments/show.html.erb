@@ -1,0 +1,57 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2>Form history_assignment</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="">Home</a>
+      </li>
+      <li>
+        <a href="<%= history_assignments_url %>">List</a>
+      </li>
+      <li class="active">
+        <strong>Detail</strong>
+      </li>
+    </ol>
+  </div>
+</div>
+<br>
+<div id="content">
+  <div class="page-header">
+    <%= link_to history_assignments_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+    <% end %>
+    <%= link_to edit_history_assignment_path(@history_assignment), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+    <% end %>
+<!--    <h1>Show </h1>-->
+  </div>
+
+  <dl class="dl-horizontal">
+      <dt>Parent assignment:</dt>
+      <dd><%= @history_assignment.parent_assignment_id %></dd>
+
+      <dt>Status:</dt>
+      <dd><%= @history_assignment.status %></dd>
+
+      <dt>By:</dt>
+      <dd><%= @history_assignment.by %></dd>
+
+      <dt>Alasan:</dt>
+      <dd><%= @history_assignment.alasan %></dd>
+
+      <dt>Deskripsi:</dt>
+      <dd><%= @history_assignment.deskripsi %></dd>
+
+      <dt>Info:</dt>
+      <dd><%= @history_assignment.info %></dd>
+
+      <dt>Status info:</dt>
+      <dd><%= @history_assignment.status_info %></dd>
+
+      <dt>Tertuju info:</dt>
+      <dd><%= @history_assignment.tertuju_info %></dd>
+
+  </dl>
+</div>

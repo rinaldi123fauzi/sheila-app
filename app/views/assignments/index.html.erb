@@ -1,0 +1,72 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2>Form assignment</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="">Home</a>
+      </li>
+      <li>
+        <a href="<%= assignments_url %>">List</a>
+      </li>
+    </ol>
+  </div>
+</div>
+<br>
+<div id="content">
+  <div class="page-header">
+    <!--    <h1>Listing </h1>-->
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover dataTables-example">
+      <thead>
+      <tr>
+        <th>No</th>
+                  <th>Nama</th>
+                  <th>Position</th>
+                  <th>Satuan kerja</th>
+                  <th>Service type</th>
+                  <th>Spesifik output</th>
+                  <th>Lokasi kerja</th>
+                  <th>Pihak ketiga</th>
+                  <th>Lama penugasan</th>
+                <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @assignments.each_with_index do |assignment, index| %>
+      <tr>
+        <td><%= index+1 %></td>
+                  <td><%= assignment.nama %></td>
+                  <td><%= assignment.position.name %></td>
+                  <td><%= assignment.satuan_kerja %></td>
+                  <td><%= assignment.service_type.name %></td>
+                  <td><%= assignment.spesifik_output %></td>
+                  <td><%= assignment.assignment_place.name %></td>
+                  <td><%= assignment.pihak_ketiga %></td>
+                  <td><%= assignment.lama_penugasan %></td>
+                <td><%= link_to '', detail_assignments_path(assignment), class: 'fa fa-eye btn btn-primary dim' %></td>
+        <td><%= link_to '', edit_assignment_path(assignment), class: 'fa fa-pencil btn btn-warning dim' %></td>
+        <td><%= link_to '', assignment, method: :delete, data: { confirm: 'Are you sure?' }, class: 'fa fa-trash btn btn-danger dim' %></td>
+      </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+    $(function () {
+        $('.dataTables-example').dataTable({
+            dom: "<'myfilter'f><'mylength'l>t<'myfilter'i><'p'p>",
+            language: {
+                search: "_INPUT_",
+                searchPlaceholder: "Search..."
+            }
+        });
+
+    });
+</script>

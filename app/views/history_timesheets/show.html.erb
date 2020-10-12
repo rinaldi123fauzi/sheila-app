@@ -1,0 +1,45 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2>Form history_timesheet</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="">Home</a>
+      </li>
+      <li>
+        <a href="<%= history_timesheets_url %>">List</a>
+      </li>
+      <li class="active">
+        <strong>Detail</strong>
+      </li>
+    </ol>
+  </div>
+</div>
+<br>
+<div id="content">
+  <div class="page-header">
+    <%= link_to history_timesheets_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+    <% end %>
+    <%= link_to edit_history_timesheet_path(@history_timesheet), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+    <% end %>
+<!--    <h1>Show </h1>-->
+  </div>
+
+  <dl class="dl-horizontal">
+      <dt>Parent timesheet:</dt>
+      <dd><%= @history_timesheet.parent_timesheet_id %></dd>
+
+      <dt>Approve status:</dt>
+      <dd><%= @history_timesheet.approve_status %></dd>
+
+      <dt>Approve by:</dt>
+      <dd><%= @history_timesheet.approve_by %></dd>
+
+      <dt>Reject by:</dt>
+      <dd><%= @history_timesheet.reject_by %></dd>
+
+  </dl>
+</div>

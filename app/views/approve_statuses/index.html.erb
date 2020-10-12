@@ -1,0 +1,88 @@
+<div class="wrapper wrapper-content">
+  <div id="content">
+    <div class="row wrapper border-bottom white-bg page-heading">
+      <div class="col-lg-10">
+        <h2>List approve_status</h2>
+        <ol class="breadcrumb">
+          <li>
+            <a href="">Home</a>
+          </li>
+          <li>
+            <a href="<%= approve_statuses_url %>">List</a>
+          </li>
+          <li class="active">
+            <strong>List</strong>
+          </li>
+        </ol>
+      </div>
+    </div>
+    <br>
+    <div id="content">
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover dataTables-example">
+          <thead>
+          <tr>
+            <th>No</th>
+            <th>Parent timesheet</th>
+            <th>Approve by</th>
+            <th>Status1</th>
+            <th>Status2</th>
+            <th>Status3</th>
+            <th>Status4</th>
+            <th>Statuspm</th>
+            <th>Info1</th>
+            <th>Info2</th>
+            <th>Info3</th>
+            <th>Info4</th>
+            <th>String</th>
+            <th>Infopm</th>
+            <th>Alasan</th>
+            <th>Deskripsi</th>
+            <th></th>
+            <th></th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <% @approve_statuses.each_with_index do |approve_status, index| %>
+            <tr>
+              <td><%= index + 1 %></td>
+              <td><%= approve_status.parent_timesheet_id %></td>
+              <td><%= approve_status.approve_by %></td>
+              <td><%= approve_status.status1 %></td>
+              <td><%= approve_status.status2 %></td>
+              <td><%= approve_status.status3 %></td>
+              <td><%= approve_status.status4 %></td>
+              <td><%= approve_status.statuspm %></td>
+              <td><%= approve_status.info1 %></td>
+              <td><%= approve_status.info2 %></td>
+              <td><%= approve_status.info3 %></td>
+              <td><%= approve_status.info4 %></td>
+              <td><%= approve_status.string %></td>
+              <td><%= approve_status.infopm %></td>
+              <td><%= approve_status.alasan %></td>
+              <td><%= approve_status.deskripsi %></td>
+              <td><%= link_to 'Show', approve_status %></td>
+              <td><%= link_to 'Destroy', approve_status, method: :delete, data: {confirm: 'Are you sure?'} %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for :javascript do -%>
+  <script type="text/javascript" charset="utf-8">
+      $(function () {
+          $('.dataTables-example').dataTable({
+              dom: "<'myfilter'f><'mylength'l>t<'myfilter'i><'p'p>",
+              language: {
+                  search: "_INPUT_",
+                  searchPlaceholder: "Search..."
+              }
+          });
+      });
+  </script>
+<% end %>

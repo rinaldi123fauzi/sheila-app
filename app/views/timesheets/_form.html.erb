@@ -1,0 +1,94 @@
+<div class="panel panel-default">
+  <div class="panel-heading">Form Timesheet</div>
+  <div class="panel-body">
+    <%= form_for(@timesheet, html: {class: "form-horizontal", role: "form"}) do |f| %>
+      <% if @timesheet.errors.any? %>
+        <div class="alert alert-danger alert-dismissable" role="alert">
+          <button type="button" class="close" data-dismiss="alert">
+            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <h4><%= pluralize(@timesheet.errors.count, "error") %> prohibited this timesheet from being saved:</h4>
+
+          <ul>
+            <% @timesheet.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <!--      <div class="form-group">-->
+      <%#= f.label :user, class: "col-sm-2 control-label" %>
+      <!--        <div class="col-sm-10">-->
+      <!--          <div class="input-group">-->
+      <%#= f.collection_select :user_id, User.order(:id), :id, :name, {prompt: "Select a Users"}, {:class => 'form-control chosen-select'} %>
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--      </div>-->
+      <input type="hidden" name="timesheet[user_id]" value="<%= current_user.id %>">
+      <div class="form-group">
+        <%= f.label "Judul Aktifitas", class: "col-sm-2 control-label" %>
+        <div class="col-sm-10">
+          <%= f.collection_select :activity_title_id, ActivityTitle.order(:id), :id, :name, {prompt: "Select a Judul"}, {onchange: "changeDs($(this))", :class => 'form-control chosen-select'} %>
+        </div>
+      </div>
+      <div class="form-group">
+        <%= f.label :isi_aktivitas, class: "col-sm-2 control-label" %>
+        <div class="col-sm-10">
+          <%= f.text_area :isi_aktivitas, class: "form-control", row: 8 %>
+        </div>
+      </div>
+      <div class="form-group">
+        <%= f.label :tanggal, class: "col-sm-2 control-label" %>
+        <div class="col-sm-10">
+          <%= f.text_field :tanggal, class: "datepicker" %>
+        </div>
+      </div>
+      <div class="working">
+        <div class="form-group">
+          <%= f.label :jam_mulai, class: "col-sm-2 control-label" %>
+          <div class="col-sm-10">
+            <%= f.time_select :jam_mulai, class: "form-control" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.label :jam_selesai, class: "col-sm-2 control-label" %>
+          <div class="col-sm-10">
+            <%= f.time_select :jam_selesai, class: "form-control" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.label :lokasi_kerja, class: "col-sm-2 control-label" %>
+          <div class="col-sm-10">
+            <%= f.text_field :lokasi_kerja, class: "form-control" %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.label "Output Aktifitas", class: "col-sm-2 control-label" %>
+          <div class="col-sm-10">
+            <%= f.collection_select :activity_output_id, ActivityOutput.order(:id), :id, :name, {prompt: "Select a Output"}, {:class => 'form-control chosen-select'} %>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <%= f.submit "Finish", class: "btn btn-primary" %>
+          <input type="submit" value="Next Line" class="btn btn-primary" name="next_line">
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function () {
+        $('.working').show();
+    });
+
+    function changeDs(value) {
+        if (value.val() == 4) {
+            $('.working').hide();
+        } else {
+            $('.working').show();
+        }
+    }
+</script>

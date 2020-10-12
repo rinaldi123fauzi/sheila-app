@@ -1,0 +1,26 @@
+require 'axlsx_styler'
+wb = xlsx_package.workbook
+wb.styles do |style|
+  highlight_cell = style.add_style(bg_color: "FF0000")
+    wb.add_worksheet(name: "Timesheets") do |sheet|
+    bold = style.add_style :b => true
+    sheet.add_row
+    sheet.add_row ["","Nama", @getPersonilDetail.first.nama_lengkap.to_s]
+    sheet.add_row ["","Email", @getPersonilDetail.first.email.to_s]
+    sheet.add_row ["","Jabatan", @getPersonilDetail.first.namepositions.to_s]
+    sheet.add_row ["","Wilayah", @getPersonilDetail.first.nameassignmentplaces.to_s]
+    sheet.add_row ["","Rentang Export",  @start + " ~> " + @end]
+    @count = 0
+    @timesheets.each_with_index do |f|
+        @hasil = @count += f.minute_total
+    end
+    sheet.add_row ["","Total Minutes",  @hasil]
+    sheet.add_row
+    sheet.add_row ["","No","Tanggal","Mulai","Berakhir","Isi Aktivitas", "Lokasi Kerja", "Total Menit"]
+    sheet.add_style 'B9:H9', b: true
+    sheet.add_style 'B9:H9', bg_color: '95AFBA'
+      @timesheets.each_with_index do |timesheet, index|
+        sheet.add_row ["",index+1, timesheet.tanggal.strftime("%d %B %Y"), timesheet.jam_mulai.strftime("%H:%M"), timesheet.jam_selesai.strftime("%H:%M"), timesheet.isi_aktivitas, timesheet.lokasi_kerja, timesheet.minute_total]
+      end
+    end
+end

@@ -1,0 +1,128 @@
+<style type="text/css">
+  body {
+    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+    font-size: 11px;
+    color: black;
+  }
+
+  .ibox-title {
+    font-size: 10px;
+    font-style: italic;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  .in-table tr td,
+  .in-table tr th {
+    border-collapse: collapse;
+    border: 1px solid black;
+    padding: 3px;
+  }
+
+  .in-table tr th {
+    background-color: #c6d9f0;
+  }
+
+  .in-table table {
+    border: 0px;
+    margin-top: 5px;
+  }
+
+  .bottom-table tr td {
+    border-collapse: collapse;
+    border: 1px solid black;
+    padding-left: 3px;
+  }
+
+  table, tr, td, th, tbody, thead, tfoot {
+    page-break-inside: avoid !important;
+  }
+</style>
+<table border="0">
+  <tr>
+    <td colspan="3">
+      <h3 style="text-align: center; margin-top: 15px;font-style: italic;font-size: 16px;"><b>Timesheet</b></h3>
+      <p style="text-align: center; margin-bottom: 15px">
+        <b style="font-size: 30px;"><%= @getPersonilDetail ? @getPersonilDetail.first.nama_lengkap.to_s : "" %></b></p>
+      <p style="text-align: center; font-size: 20px; margin-bottom: 15px">Jabatan
+        : <%= @getPersonilDetail ? @getPersonilDetail.first.namepositions.to_s : "" %></p>
+      <p style="text-align: center; font-size: 20px; margin-bottom: 15px">Wilayah
+        : <%= @getPersonilDetail ? @getPersonilDetail.first.nameassignmentplaces.to_s : "" %></p>
+      <p style="text-align: center; font-size: 20px; margin-bottom: 15px"><%= @start + " ~> " + @end %></p>
+    </td>
+  </tr>
+</table>
+
+<table border="0">
+  <tr>
+    <td>
+      <h3>Time record summary : </h3>
+      <table border="1" style="border-collapse: collapse;" class="in-table">
+        <thead>
+        <tr>
+          <th>Project</th>
+          <th>Minutes</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>Asantie</td>
+          <% @count = 0 %>
+          <% @timesheets.each_with_index do |f| %>
+            <% @hasil = @count += f.minute_total %>
+          <% end %>
+          <td style="text-align: center;"><%= @hasil %></td>
+        </tr>
+        </tbody>
+      </table>
+    </td>
+    <% (1..100).each do |i| %>
+    <td></td>
+    <% end %>
+    <td>
+      <table border="1" style="border-collapse: collapse;" class="in-table">
+        <thead>
+        <tr>
+          <th>Member</th>
+          <th>Minutes</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td style="text-align: center;"><%= @getPersonilDetail.first.email.to_s %></td>
+          <% @count = 0 %>
+          <% @timesheets.each_with_index do |f| %>
+            <% @hasil = @count += f.minute_total %>
+          <% end %>
+          <td style="text-align: center;"><%= @hasil %></td>
+        </tr>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<h2>Time recording details : </h2>
+
+<table border="1" style="border-collapse: collapse;" class="in-table">
+  <thead>
+  <tr>
+    <th>Tanggal dan jam</th>
+    <th>Details</th>
+    <th>Hours</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @timesheets.each_with_index do |f| %>
+    <tr>
+      <td><%= f.tanggal.strftime('%d %B %Y').to_s + " Jam : " + f.jam_mulai.strftime('%H:%M').to_s + " - " + f.jam_selesai.strftime('%H:%M').to_s %></td>
+      <td><%= f.isi_aktivitas %></td>
+      <td><%= distance_of_time_in_words(f.jam_mulai.strftime('%H:%M').to_s, f.jam_selesai.strftime('%H:%M').to_s, :only => [:hours,:minutes]) %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,607 @@
+<div class="wrapper wrapper-content">
+  <div id="content">
+    <div class="row wrapper border-bottom white-bg page-heading">
+      <div class="col-sm-4">
+        <h2>Assignment detail</h2>
+        <ol class="breadcrumb">
+          <li>
+            <a href="<%= root_path %>">Home</a>
+          </li>
+          <li>
+            <a href="<%= assignments_url %>">List</a>
+          </li>
+          <li class="active">
+            <strong>Assignment detail</strong>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <%
+      @getStatus = ApproveStatus.find_by_parent_assignment_id(@assignments.first.parent_id.to_s)
+    %>
+    <% if @getStatus.present? and (@getStatus.status1 == "rejected" or @getStatus.status2 == "rejected" or @getStatus.status3 == "rejected" or @getStatus.status4 == "rejected") %>
+      <div class="ibox float-e-margins" style="width: 60%;">
+        <div class="ibox-title">
+          <h5>Status</h5>
+        </div>
+        <div>
+          <div class="ibox-content profile-content">
+            <h4><strong style="color: red;">REJECTED</strong> by <%= @getStatus.reject_by %></h4>
+            <br>
+            <h4><strong>Alasan</strong></h4>
+            <p><%= @getStatus.alasan %></p>
+            <h4><strong>Deskripsi</strong></h4>
+            <p>
+              <%= @getStatus.deskripsi %>
+            </p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <%
+      @getRoleAssignment = RoleAssignment.left_outer_joins(:role).where(user_id: current_user.id).select('roles.name')
+      @getNotif = HistoryAssignment.where('parent_assignment_id = ? and status != ? and tertuju_info = ? or tertuju_info = ?', @assignments.first.parent_id.to_s, "approved", @getRoleAssignment.first.name.to_s, current_user.username).last
+    %>
+
+    <% if @getNotif.present? %>
+      <% if  @getNotif.status_info == "konfirm" %>
+        <div class="ibox float-e-margins" style="width: 60%;">
+          <div class="ibox-title">
+            <h5>Comment</h5>
+          </div>
+          <div>
+            <div class="ibox-content profile-content">
+              <% if @getNotif.status_info == "konfirm" and (@getApprove.info1.present? and current_user.roles.any? { |r| r.name == "Personil ASANTIE" }) %>
+                <h4>Approval 1</h4>
+                <br>
+                <h4><strong>Komentar</strong></h4>
+                <p>
+                  <%= @getNotif.info %>
+                </p>
+              <% elsif @getNotif.status_info == "konfirm" and (@getApprove.info2.present? and current_user.roles.any? { |r| r.name == "Approve1" }) %>
+                <h4>Approval 2</h4>
+                <br>
+                <h4><strong>Komentar</strong></h4>
+                <p>
+                  <%= @getNotif.info %>
+                </p>
+              <% elsif @getNotif.status_info == "konfirm" and (@getApprove.info3.present? and current_user.roles.any? { |r| r.name == "Approve2" }) %>
+                <h4>Approval 3</h4>
+                <br>
+                <h4><strong>Komentar</strong></h4>
+                <p>
+                  <%= @getNotif.info %>
+                </p>
+              <% elsif @getNotif.status_info == "konfirm" and (@getApprove.info4.present? and current_user.roles.any? { |r| r.name == "Approve3" }) %>
+                <h4>Approval 4</h4>
+                <br>
+                <h4><strong>Komentar</strong></h4>
+                <p>
+                  <%= @getNotif.info %>
+                </p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+
+    <div class="row">
+      <div class="col-lg-9">
+        <div class="wrapper wrapper-content animated fadeInUp">
+          <div class="ibox">
+            <div class="ibox-content">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="m-b-md">
+                    <a href="<%= edit_assignment_path(params[:assignment_id]) %>" class="btn btn-white btn-xs pull-right">Edit
+                      assignment</a>
+                    <h2><%= @assignment.first.nama_tugas.to_s %></h2>
+                  </div>
+                  <!--              <dl class="dl-horizontal">-->
+                  <!--                <dt>Status:</dt>-->
+                  <!--                <dd><span class="label label-primary">Active</span></dd>-->
+                  <!--              </dl>-->
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-5">
+                  <dl class="dl-horizontal">
+
+                    <dt>Created by:</dt>
+                    <dd><%= @assignment.first.nama.to_s %></dd>
+                    <dt>Jabatan:</dt>
+                    <dd><%= @assignment.first.position.name.to_s %></dd>
+                    <dt>Satuan Kerja:</dt>
+                    <dd><%= @assignment.first.satuan_kerja.to_s %></dd>
+                  </dl>
+                </div>
+                <div class="col-lg-7" id="cluster_info">
+                  <dl class="dl-horizontal">
+
+                    <dt>Last Updated:</dt>
+                    <dd><%= @assignment.first.updated_at.to_s %></dd>
+                    <dt>Created:</dt>
+                    <dd><%= @assignment.first.created_at.to_s %></dd>
+                    <!--                <dt>Participants:</dt>-->
+                    <!--                <dd class="project-people">-->
+                    <!--                  <a href=""><img alt="image" class="img-circle" src="<%#= image_path('a3.jpg') %>"></a>-->
+                    <!--                  <a href=""><img alt="image" class="img-circle" src="<%#= image_path('a1.jpg') %>"></a>-->
+                    <!--                  <a href=""><img alt="image" class="img-circle" src="<%#= image_path('a2.jpg') %>"></a>-->
+                    <!--                  <a href=""><img alt="image" class="img-circle" src="<%#= image_path('a4.jpg') %>"></a>-->
+                    <!--                  <a href=""><img alt="image" class="img-circle" src="<%#= image_path('a5.jpg') %>"></a>-->
+                    <!--                </dd>-->
+                  </dl>
+                </div>
+              </div>
+
+              <h4>Ditugaskan ke :</h4>
+              <%
+                @getTimesheet = ApproveStatus.find_by_parent_assignment_id(@assignment.first.parent_id.to_s)
+
+                if @getTimesheet.present?
+                  @getUser = Timesheet.find_by_id(@getTimesheet.timesheet_id)
+              %>
+              <div class="row">
+                <div class="col-lg-5">
+                  <dl class="dl-horizontal">
+
+                    <dt>Nama:</dt>
+                    <dd><%= @getUser ? @getUser.user.name : "" %></dd>
+                    <dt>Tanggal:</dt>
+                    <dd><%= @getUser ? @getUser.tanggal.strftime('%d %B %Y') : "" %></dd>
+                    <dt>Jam Mulai:</dt>
+                    <dd><%= @getUser ? @getUser.jam_mulai.strftime('%H:%M') : "" %></dd>
+                    <dt>Jam Selesai:</dt>
+                    <dd><%= @getUser ? @getUser.jam_selesai.strftime('%H:%M') : "" %></dd>
+                    <dt>Lokasi:</dt>
+                    <dd><%= @getUser ? @getUser.lokasi_kerja : "" %></dd>
+                  </dl>
+                </div>
+                <div class="col-lg-7" id="cluster_info">
+                  <dl class="dl-horizontal">
+
+                    <dt>Output Aktivitas:</dt>
+                    <dd><%= @getUser ? @getUser.activity_output.name : "" %></dd>
+                    <dt>Tempat Penugasan:</dt>
+                    <dd><%= @getUser ? @getUser.assignment_place.name : "" %></dd>
+                    <dt>Total Menit:</dt>
+                    <dd><%= @getUser ? @getUser.minute_total : "" %></dd>
+                    <!--                <dt>Participants:</dt>-->
+                    <!--                <dd class="project-people">-->
+                    <!--                  <a href=""><img alt="image" class="img-circle" src="<%#= image_path('a3.jpg') %>"></a>-->
+                    <!--                  <a href=""><img alt="image" class="img-circle" src="<%#= image_path('a1.jpg') %>"></a>-->
+                    <!--                  <a href=""><img alt="image" class="img-circle" src="<%#= image_path('a2.jpg') %>"></a>-->
+                    <!--                  <a href=""><img alt="image" class="img-circle" src="<%#= image_path('a4.jpg') %>"></a>-->
+                    <!--                  <a href=""><img alt="image" class="img-circle" src="<%#= image_path('a5.jpg') %>"></a>-->
+                    <!--                </dd>-->
+                  </dl>
+                </div>
+              </div>
+              <% end %>
+              <!--          <div class="row">-->
+              <!--            <div class="col-lg-12">-->
+              <!--              <dl class="dl-horizontal">-->
+              <!--                <dt>Completed:</dt>-->
+              <!--                <dd>-->
+              <!--                  <div class="progress progress-striped active m-b-sm">-->
+              <!--                    <div style="width: 60%;" class="progress-bar"></div>-->
+              <!--                  </div>-->
+              <!--                  <small>Project completed in <strong>60%</strong>. Remaining close the project, sign a contract and invoice.</small>-->
+              <!--                </dd>-->
+              <!--              </dl>-->
+              <!--            </div>-->
+              <!--          </div>-->
+              <div class="row m-t-sm">
+                <div class="col-lg-12">
+
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <h3>Status : </h3>
+              <% if @getApprove.present? %>
+                <div class="col-md-6">
+                  <% if @getApprove.status1 == "approved" %>
+                    <div class="alert alert-success">
+                      <i class="fa fa-check"></i> Approved 1
+                    </div>
+                  <% end %>
+                  <% if @getApprove.status2 == "approved" %>
+                    <div class="alert alert-success">
+                      <i class="fa fa-check"></i> Approved 2
+                    </div>
+                  <% end %>
+                  <% if @getApprove.status3 == "approved" %>
+                    <div class="alert alert-success">
+                      <i class="fa fa-check"></i> Approved 3
+                    </div>
+                  <% end %>
+                </div>
+                <div class="col-md-6">
+                  <% if @getApprove.statuspm == "approved" %>
+                    <div class="alert alert-success">
+                      <i class="fa fa-check"></i> Approved PM
+                    </div>
+                  <% end %>
+                  <% if @getApprove.status4 == "approved" %>
+                    <div class="alert alert-success">
+                      <i class="fa fa-check"></i> Approved 4
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="wrapper wrapper-content project-manager">
+          <h4>Assignment description</h4>
+          <hr style="border-color: black">
+          <!--      <img src="<%#= image_path('zender_logo.png') %>" class="img-responsive">-->
+          <div class="row">
+            <div class="col-md-6">
+              <h4>Spesifik Output</h4>
+              <p class="small">
+                <%= @assignment.first.spesifik_output.to_s %>
+              </p>
+
+              <h4>Lokasi Kerja</h4>
+              <p class="small">
+                <%= @assignment.first.assignment_place.name %>
+              </p>
+
+              <h4>Pihak Ketiga</h4>
+              <p class="small">
+                <%= @assignment.first.pihak_ketiga.to_s %>
+              </p>
+
+              <h4>Lama Penugasan</h4>
+              <p class="small">
+                <%= @assignment.first.lama_penugasan.to_s %>
+              </p>
+              <p class="small font-bold">
+                <!--        <span><i class="fa fa-circle text-warning"></i> High priority</span>-->
+                <span>File</span>
+                <br>
+                <% @fileAssignment.file_assignment.each do |file_assignment| %>
+            <span style="margin-right: 10px">
+              <%= link_to "#{["#{file_assignment.filename}"]}", rails_blob_path(file_assignment, disposition: 'preview'), :target => "_blank" %>
+              <br>
+            </span>
+                <% end %>
+              </p>
+            </div>
+            <div class="col-md-6">
+              <h4>Status Perjalanan Dinas</h4>
+              <p class="small">
+                <%= @assignment.first.perjalanan_dinas ? @assignment.first.perjalanan_dinas.to_s : "N/A" %>
+              </p>
+            </div>
+          </div>
+
+          <!--      <h5>Project tag</h5>-->
+          <!--      <ul class="tag-list" style="padding: 0">-->
+          <!--        <li><a href=""><i class="fa fa-tag"></i> Zender</a></li>-->
+          <!--        <li><a href=""><i class="fa fa-tag"></i> Lorem ipsum</a></li>-->
+          <!--        <li><a href=""><i class="fa fa-tag"></i> Passages</a></li>-->
+          <!--        <li><a href=""><i class="fa fa-tag"></i> Variations</a></li>-->
+          <!--      </ul>-->
+          <!--      <h5>Project files</h5>-->
+          <!--      <ul class="list-unstyled project-files">-->
+          <!--        <li><a href=""><i class="fa fa-file"></i> Project_document.docx</a></li>-->
+          <!--        <li><a href=""><i class="fa fa-file-picture-o"></i> Logo_zender_company.jpg</a></li>-->
+          <!--        <li><a href=""><i class="fa fa-stack-exchange"></i> Email_from_Alex.mln</a></li>-->
+          <!--        <li><a href=""><i class="fa fa-file"></i> Contract_20_11_2014.docx</a></li>-->
+          <!--      </ul>-->
+          <div class="text-center m-t-md">
+            <%
+              if current_user.roles.any? { |r| r.name == "Approve1" }
+                @filter = ApproveStatus.where('parent_assignment_id = ? and status1 = ?', @assignment.first.parent_id.to_s, "pending").select('*')
+              elsif current_user.roles.any? { |r| r.name == "Approve2" }
+                @filter = ApproveStatus.where('parent_assignment_id = ? and status1 = ? and status2 = ?', @assignment.first.parent_id.to_s, "approved", "pending").select('*')
+              elsif current_user.roles.any? { |r| r.name == "Approve3" } and @assignment.first.perjalanan_dinas == "SPPD"
+                @filter = ApproveStatus.where('parent_assignment_id = ? and status1 = ? and status2 = ? and status3 = ?', @assignment.first.parent_id.to_s, "approved", "approved", "pending").select('*')
+              elsif current_user.roles.any? { |r| r.name == "PM" } and @assignment.first.perjalanan_dinas == "SPPD"
+                @filter = ApproveStatus.where('parent_assignment_id = ? and status1 = ? and status2 = ? and status3 = ? and statuspm = ?', @assignment.first.parent_id.to_s, "approved", "approved", "approved", "").select('*')
+              elsif current_user.roles.any? { |r| r.name == "Approve4" } and @assignment.first.perjalanan_dinas == "SPPD"
+                @filter = ApproveStatus.where('parent_assignment_id = ? and status1 = ? and status2 = ? and status3 = ? and statuspm = ? and status4 = ?', @assignment.first.parent_id.to_s, "approved", "approved", "approved", "approved", "pending").select('*')
+              end
+            %>
+            <% if current_user.roles.any? { |r| r.name == "Approve1" } %>
+              <button class="btn btn-xs btn-primary dim" type="button" data-toggle="modal" data-target="#setSPPD">
+                <i class="fa fa-pencil"></i>Set SPPD
+              </button>
+            <% end %>
+
+            <% if @assignment.first.perjalanan_dinas.present? and (current_user.roles.any? { |r| r.name != "Superadmin" and r.name != "Personil ASANTIE" }) and @filter.present? %>
+              <% if current_user.roles.any? { |r| r.name == "Approve1" } %>
+                <button class="btn btn-xs btn-primary dim" type="button" data-toggle="modal" data-target="#approve">
+                  <i class="fa fa-check"></i>Approve
+                </button>
+              <% else %>
+                <a href="<%= doApproveAssignment_approve_statuses_path(@assignment.first.parent_id.to_s) %>" class="confirmation">
+                  <button class="btn btn-xs btn-primary dim" type="button"><i class="fa fa-check"></i>Approve</button>
+                </a>
+              <% end %>
+              <% if current_user.roles.any? { |r| r.name != "Approve4" and r.name != "PM" } %>
+                <button class="btn btn-xs btn-danger dim" type="button" data-toggle="modal" data-target="#reject">
+                  <i class="fa fa-close"></i>Reject
+                </button>
+              <% end %>
+            <% end %>
+
+            <% if current_user.roles.any? { |r| r.name != "Superadmin" and r.name != "Personil ASANTIE" } %>
+              <button class="btn btn-xs btn-info dim" type="button" data-toggle="modal" data-target="#info">
+                <i class="fa fa-info"></i>Comment
+              </button>
+            <% end %>
+
+            <button class="btn btn-xs btn-info dim" type="button" data-toggle="modal" data-target="#myModalHistory">
+              <i class="fa fa-history"></i>History
+            </button>
+            <div class="modal inmodal" id="myModalHistory" tabindex="-1" role="dialog" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content animated fadeIn">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                      <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">History</h4>
+                  </div>
+                  <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                      <h5>History</h5>
+                    </div>
+                    <div class="ibox-content">
+
+                      <table class="table">
+                        <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Status</th>
+                          <th>by</th>
+                          <th>Info *(Jika Ada)</th>
+                          <th>Alasan *(Jika Ada)</th>
+                          <th>Deskripsi *(Jika Ada)</th>
+                          <th>Tanggal / Jam</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <% @getHistory.each_with_index do |history, index| %>
+                          <tr>
+                            <td><%= index + 1 %></td>
+                            <td><%= history.status %></td>
+                            <td><%= history.by %></td>
+                            <td><%= history.info %></td>
+                            <td><%= history.alasan %></td>
+                            <td><%= history.deskripsi %></td>
+                            <td><%= history.created_at %></td>
+                          </tr>
+                        <% end %>
+                        </tbody>
+                      </table>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal inmodal" id="setSPPD" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content animated fadeIn">
+                <form action="<%= setSPPD_assignments_path %>" method="get" class="widget-body">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                      <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Set SPPD</h4>
+                  </div>
+                  <div class="modal-body">
+                    <input type="hidden" name="assignment_id" value="<%= @assignment.first.id.to_s %>">
+                    <select name="perjalanan_dinas" class="form-control">
+                      <option value="">Silahkan Pilih</option>
+                      <option value="SPPD">SPPD</option>
+                      <option value="Non SPPD">Non SPPD</option>
+                    </select>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="modal inmodal" id="reject" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content animated fadeIn">
+                <form action="<%= doRejectAssignment_approve_statuses_path %>" method="get" class="widget-body">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                      <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Reject</h4>
+                  </div>
+                  <div class="modal-body">
+                    <input type="hidden" name="parent_id" value="<%= @assignment.first.parent_id.to_s %>">
+                    <select name="alasan" class="form-control" required>
+                      <option value="">Silahkan Pilih</option>
+                      <option value="Tidak Lengkap">Tidak Lengkap</option>
+                      <option value="Tidak Relevan">Tidak Relevan</option>
+                      <option value="Miss Typo">Miss Typo</option>
+                      <option value="Tidak Masuk Akal">Tidak Masuk Akal</option>
+                    </select>
+                    <br>
+                    <textarea name="deskripsi" cols="50" rows="10" class="form-control"></textarea>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="modal inmodal" id="approve" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content animated fadeIn">
+                <form action="<%= createTimesheet_approve_statuses_path %>" method="get" class="widget-body">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                      <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Set Timesheet</h4>
+                  </div>
+
+                  <div class="modal-body">
+                    <input type="hidden" name="parent_assignment_id" value="<%= @assignment.first.parent_id.to_s %>">
+
+                    <div class="form-group">
+                      <label for="">Personil ASANTIE</label>
+                      <select name="personil_asantie" class="form-control chosen-select" id="" required>
+                        <option value="">Pilih</option>
+                        <% @getPersonilAsantie = PersonilDetail.all %>
+                        <% @getPersonilAsantie.each do |f| %>
+                          <option value="<%= f.user_id %>"><%= f.nama_lengkap %></option>
+                        <% end %>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="">Tanggal</label>
+                      <input type="text" class="form-control datepicker" name="tanggal" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="">Judul Aktivitas</label>
+                      <select name="judul_aktivitas" class="form-control chosen-select" id="" required>
+                        <option value="">Pilih</option>
+                        <% @getActivityTitle = ActivityTitle.all %>
+                        <% @getActivityTitle.each do |f| %>
+                          <option value="<%= f.id %>"><%= f.name %></option>
+                        <% end %>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="">Isi Aktivitas</label>
+                      <textarea name="isi_aktivitas" class="form-control" id="" cols="30" rows="10" required></textarea>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="">Jam Mulai</label>
+                          <input type="time" class="form-control" name="jam_mulai" required>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="">Jam Selesai</label>
+                          <input type="time" class="form-control" name="jam_selesai" required>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="">Lokasi</label>
+                          <input type="text" class="form-control" name="lokasi_kerja" required>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="">Output Aktivitas</label>
+                      <select name="output_aktivitas" class="chosen-select" id="" required>
+                        <option value="">Pilih</option>
+                        <% @getActivityOutput = ActivityOutput.all %>
+                        <% @getActivityOutput.each do |f| %>
+                          <option value="<%= f.id %>"><%= f.name %></option>
+                        <% end %>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="modal inmodal" id="info" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content animated fadeIn">
+                <form action="<%= createInfoAssignment_approve_statuses_path %>" method="get" class="widget-body">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                      <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Info</h4>
+                  </div>
+                  <div class="modal-body">
+                    <input type="hidden" name="parent_id" value="<%= @assignment.first.parent_id.to_s %>">
+                    <textarea name="info" cols="50" rows="10" class="form-control" required></textarea>
+                  </div>
+                  <%  if current_user.roles.any? { |r| r.name == "Approve1" } %>
+                    <%
+                      @getUser = User.find(@assignment.first.user_mengajukan.to_s)
+                    %>
+                    <input type="hidden" name="tertuju_info" value="<%= @getUser.username %>">
+                  <% elsif  current_user.roles.any? { |r| r.name == "Approve2" } %>
+                    <input type="hidden" name="tertuju_info" value="Approve1">
+                  <% elsif current_user.roles.any? { |r| r.name == "Approve3" } %>
+                    <input type="hidden" name="tertuju_info" value="Approve2">
+                  <% elsif current_user.roles.any? { |r| r.name == "Approve4" } && @assignment.first.perjalanan_dinas.to_s == "SPPD" %>
+                    <input type="hidden" name="tertuju_info" value="PM">
+                  <% elsif current_user.roles.any? { |r| r.name == "Approve4" } && @assignment.first.perjalanan_dinas.to_s != "SPPD" %>
+                    <input type="hidden" name="tertuju_info" value="Approve3">
+                  <% end %>
+                  <% if current_user.roles.any? { |r| r.name == "PM" } && @assignment.first.perjalanan_dinas.to_s == "SPPD" %>
+                    <input type="hidden" name="tertuju_info" value="Approve3">
+                  <% end %>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <script type="text/javascript" charset="utf-8">
+      $(function () {
+          return $('.chosen-select').chosen({
+              allow_single_deselect: true,
+              no_results_text: 'No results matched',
+              width: '512px'
+          });
+      });
+      $(document).ready(function () {
+          $('.datepicker').datepicker({
+              todayHighlight: true,
+              orientation: 'auto down',
+              format: 'yyyy-mm-dd'
+          });
+      });
+
+      var elems = document.getElementsByClassName('confirmation');
+      var confirmIt = function (e) {
+          if (!confirm('Are you sure?')) e.preventDefault();
+      };
+      for (var i = 0, l = elems.length; i < l; i++) {
+          elems[i].addEventListener('click', confirmIt, false);
+      }
+
+      var elems = document.getElementsByClassName('confirmation1');
+      var confirmIt = function (e) {
+          if (!confirm('Are you sure?')) e.preventDefault();
+      };
+      for (var i = 0, l = elems.length; i < l; i++) {
+          elems[i].addEventListener('click', confirmIt, false);
+      }
+  </script>
+

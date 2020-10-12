@@ -1,0 +1,2 @@
+module AssignmentPlacesHelper
+end

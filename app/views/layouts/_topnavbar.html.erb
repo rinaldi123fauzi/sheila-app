@@ -1,0 +1,177 @@
+<div class="row border-bottom">
+  <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">
+      <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+    </div>
+    <ul class="nav navbar-top-links navbar-right">
+      <li>
+        <span class="m-r-sm text-muted welcome-message">Welcome to SHEILA Apps.</span>
+      </li>
+      <li class="dropdown">
+        <% if current_user.roles.any? { |r| r.name == "Personil ASANTIE" } %>
+          <%
+            @getRoleAssignment = RoleAssignment.left_outer_joins(:role).where(user_id: current_user.id).select('roles.name')
+            @getNotifCount = HistoryTimesheet.where('parent_timesheet_id like ? and status_info = ? and tertuju_info = ?', "%#{current_user.id}", "konfirm", @getRoleAssignment.first.name.to_s).count
+          %>
+          <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" title="Timesheet">
+            <i class="fa fa-bell"></i> <span class="label label-primary"><%= @getNotifCount %></span>
+          </a>
+          <ul class="dropdown-menu dropdown-alerts">
+            <%
+              @getNotif = HistoryTimesheet.where('parent_timesheet_id like ? and status_info = ? and tertuju_info = ?', "%#{current_user.id}", "konfirm", @getRoleAssignment.first.name.to_s)
+            %>
+            <% if @getNotif.present? %>
+              <% @getNotif.each do |f| %>
+                <li>
+                  <a href="<%= detail_timesheets_path(f.parent_timesheet_id) %>">
+                    <div>
+                      <i class="fa fa-envelope fa-fw"></i> You have messages
+                      <%
+                        @getHistory = HistoryTimesheet.find_by_parent_timesheet_id(f.parent_timesheet_id)
+                      %>
+                      <!--                        <span class="pull-right text-muted small">From <%#= @getHistory.by %></span>-->
+                    </div>
+                  </a>
+                </li>
+                <li class="divider"></li>
+              <% end %>
+            <% else %>
+              <h4>Tidak ada notifikasi terbaru</h4>
+            <% end %>
+          </ul>
+        <% else %>
+          <%
+            @getRoleAssignment = RoleAssignment.left_outer_joins(:role).where(user_id: current_user.id).select('roles.name')
+            @getNotifCount = HistoryTimesheet.where('(status_info = ? or status_info = ?) and tertuju_info = ?', "konfirm", "pending_approve", @getRoleAssignment.first.name.to_s).count
+          %>
+          <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" title="Timesheet">
+            <i class="fa fa-bell"></i> <span class="label label-primary"><%= @getNotifCount %></span>
+          </a>
+          <ul class="dropdown-menu dropdown-alerts">
+            <%
+              @getNotif = HistoryTimesheet.where('(status_info = ? or status_info = ?) and tertuju_info = ?', "konfirm", "pending_approve", @getRoleAssignment.first.name.to_s)
+            %>
+            <% if @getNotif.present? %>
+              <% @getNotif.each do |f| %>
+                <% if f.status_info == "pending_approve" %>
+                  <li>
+                    <a href="<%= detail_timesheets_path(f.parent_timesheet_id) %>">
+                      <div>
+                        <i class="fa fa-envelope fa-fw"></i> You have waiting Approval
+                        <%
+                          @getHistory = HistoryTimesheet.find_by_parent_timesheet_id(f.parent_timesheet_id)
+                        %>
+                        <!--                      <span class="pull-right text-muted small">From <%#= @getHistory.by %></span>-->
+                      </div>
+                    </a>
+                  </li>
+                  <li class="divider"></li>
+                <% else %>
+                  <li>
+                    <a href="<%= detail_timesheets_path(f.parent_timesheet_id) %>">
+                      <div>
+                        <i class="fa fa-envelope fa-fw"></i> You have messages
+                        <%
+                          @getHistory = HistoryTimesheet.find_by_parent_timesheet_id(f.parent_timesheet_id)
+                        %>
+                        <!--                      <span class="pull-right text-muted small">From <%#= @getHistory.by %></span>-->
+                      </div>
+                    </a>
+                  </li>
+                  <li class="divider"></li>
+                <% end %>
+              <% end %>
+            <%else %>
+              <h4>Tidak ada notifikasi terbaru</h4>
+            <% end %>
+          </ul>
+        <% end %>
+      </li>
+      <li class="dropdown">
+        <% if current_user.roles.any? { |r| r.name == "Personil ASANTIE" } %>
+          <%
+            @getNotifCount = HistoryAssignment.where('status_info = ? and tertuju_info = ?', "konfirm", current_user.username).count
+          %>
+          <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" title="Assignment">
+            <i class="fa fa-bell"></i> <span class="label label-warning-light"><%= @getNotifCount %></span>
+          </a>
+          <ul class="dropdown-menu dropdown-alerts">
+            <%
+              @getNotif = HistoryAssignment.where('status_info = ? and tertuju_info = ?', "konfirm", current_user.username)
+            %>
+            <% if @getNotif.present? %>
+              <% @getNotif.each do |f| %>
+                <li>
+                  <a href="<%= detail_assignments_path(f.id_assignment) %>">
+                    <div>
+                      <i class="fa fa-envelope fa-fw"></i> You have messages
+                      <%
+                        @getHistory = HistoryAssignment.find_by_parent_assignment_id(f.id_assignment)
+                      %>
+                      <!--                        <span class="pull-right text-muted small">From <%#= @getHistory.by %></span>-->
+                    </div>
+                  </a>
+                </li>
+                <li class="divider"></li>
+              <% end %>
+            <% else %>
+              <h4>Tidak ada notifikasi terbaru</h4>
+            <% end %>
+          </ul>
+        <% else %>
+          <%
+            @getRoleAssignment = RoleAssignment.left_outer_joins(:role).where(user_id: current_user.id).select('roles.name')
+            @getNotifCount = HistoryAssignment.where('(status_info = ? or status_info = ?) and tertuju_info = ?', "konfirm", "pending_approve", @getRoleAssignment.first.name.to_s).count
+          %>
+          <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" title="Assignment">
+            <i class="fa fa-bell"></i> <span class="label label-warning-light"><%= @getNotifCount %></span>
+          </a>
+          <ul class="dropdown-menu dropdown-alerts">
+            <%
+              @getNotif = HistoryAssignment.where('(status_info = ? or status_info = ?) and tertuju_info = ?', "konfirm", "pending_approve", @getRoleAssignment.first.name.to_s)
+            %>
+            <% if @getNotif.present? %>
+              <% @getNotif.each do |f| %>
+                <% if f.status_info == "pending_approve" %>
+                  <li>
+                    <a href="<%= detail_assignments_path(f.id_assignment) %>">
+                      <div>
+                        <i class="fa fa-envelope fa-fw"></i> You have waiting Approval
+                        <%
+                          @getHistory = HistoryAssignment.find_by_parent_assignment_id(f.id_assignment)
+                        %>
+                        <!--                      <span class="pull-right text-muted small">From <%#= @getHistory.by %></span>-->
+                      </div>
+                    </a>
+                  </li>
+                  <li class="divider"></li>
+                <% else %>
+                  <li>
+                    <a href="<%= detail_assignments_path(f.id_assignment) %>">
+                      <div>
+                        <i class="fa fa-envelope fa-fw"></i> You have messages
+                        <%
+                          @getHistory = HistoryAssignment.find_by_parent_assignment_id(f.id_assignment)
+                        %>
+                        <!--                      <span class="pull-right text-muted small">From <%#= @getHistory.by %></span>-->
+                      </div>
+                    </a>
+                  </li>
+                  <li class="divider"></li>
+                <% end %>
+              <% end %>
+            <% else %>
+              <h4>Tidak ada notifikasi terbaru</h4>
+            <% end %>
+          </ul>
+        <% end %>
+      </li>
+      <li>
+        <%= link_to(destroy_user_session_path, title: 'Sign Out', data: {action: 'userLogout', 'logout-msg' => 'You can improve your security further after logging out by closing this opened browser'}) do %>
+          <i class="fa fa-sign-out"></i>
+        <% end %>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>

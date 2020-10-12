@@ -1,0 +1,2 @@
+class HistoryAssignment < ApplicationRecord
+end

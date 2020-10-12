@@ -1,0 +1,37 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2>Form assignment</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="">Home</a>
+      </li>
+      <li>
+        <a href="<%= assignments_url %>">List</a>
+      </li>
+      <li class="active">
+        <strong>Form</strong>
+      </li>
+    </ol>
+  </div>
+</div>
+<br>
+<div id="content">
+  <div class="page-header">
+    <%= link_to detail_assignments_path(params[:id]), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-info-sign"></span>
+    Detail
+    <% end %>
+    <h1>Editing assignment</h1>
+  </div>
+
+  <%= render 'form' %>
+</div>
+<script type="text/javascript" charset="utf-8">
+    $(function() {
+        return $('.chosen-select').chosen({
+            allow_single_deselect: true,
+            no_results_text: 'No results matched',
+            width: '512px'
+        });
+    });
+</script>

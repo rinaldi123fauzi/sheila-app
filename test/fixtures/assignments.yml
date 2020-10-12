@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nama: MyString
+  position: one
+  satuan_kerja: MyString
+  service_type: one
+  spesifik_output: MyString
+  lokasi_kerja: MyString
+  pihak_ketiga: MyString
+  lama_penugasan: MyString
+
+two:
+  nama: MyString
+  position: two
+  satuan_kerja: MyString
+  service_type: two
+  spesifik_output: MyString
+  lokasi_kerja: MyString
+  pihak_ketiga: MyString
+  lama_penugasan: MyString

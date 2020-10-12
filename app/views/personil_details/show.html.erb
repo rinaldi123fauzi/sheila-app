@@ -1,0 +1,109 @@
+<div class="wrapper wrapper-content">
+  <div id="content">
+    <div class="row wrapper border-bottom white-bg page-heading">
+      <div class="col-lg-10">
+        <h2>Form personil_detail</h2>
+        <ol class="breadcrumb">
+          <li>
+            <a href="">Home</a>
+          </li>
+          <li>
+            <a href="<%= personil_details_url %>">List</a>
+          </li>
+          <li class="active">
+            <strong>Detail</strong>
+          </li>
+        </ol>
+      </div>
+    </div>
+    <br>
+    <div id="content">
+      <div class="page-header">
+        <%= link_to personil_details_path, class: 'btn btn-default' do %>
+          <span class="glyphicon glyphicon-list-alt"></span>
+          Back
+        <% end %>
+        <%= link_to edit_personil_detail_path(@personil_detail), class: 'btn btn-primary' do %>
+          <span class="glyphicon glyphicon-pencil"></span>
+          Edit
+        <% end %>
+        <!--    <h1>Show </h1>-->
+      </div>
+
+      <div class="ibox-title">
+        <h5>Profile Detail</h5>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="ibox float-e-margins">
+            <div>
+              <div class="ibox-content no-padding border-left-right">
+                <%= image_tag @personil_detail.photo_personil, class: "img-responsive", alt: "image" %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="ibox float-e-margins">
+            <div class="ibox-title">
+              <h5>Detail</h5>
+              <div class="ibox-tools">
+                <a class="collapse-link">
+                  <i class="fa fa-chevron-up"></i>
+                </a>
+              </div>
+            </div>
+            <div class="ibox-content">
+
+              <div>
+                <div class="feed-activity-list">
+
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="feed-element">
+                        <h3>Nama : </h3>
+                        <h5><%= @personil_detail.nama_lengkap %></h5>
+                      </div>
+
+                      <div class="feed-element">
+                        <h3>Nama panggilan: </h3>
+                        <h5><%= @personil_detail.nama_panggilan %></h5>
+                      </div>
+
+                      <div class="feed-element">
+                        <h3>Tim : </h3>
+                        <h5><%= @personil_detail.tim %></h5>
+                      </div>
+
+                      <div class="feed-element">
+                        <h3>Tempat penugasan : </h3>
+                        <h5><%= @personil_detail.assignment_place.name %></h5>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="feed-element">
+                        <h3>Jabatan : </h3>
+                        <h5><%= @personil_detail.position.name %></h5>
+                      </div>
+
+                      <div class="feed-element">
+                        <h3>Nomor ponsel : </h3>
+                        <h5><%= @personil_detail.nomor_ponsel %></h5>
+                      </div>
+
+                      <div class="feed-element">
+                        <h3>Email : </h3>
+                        <h5><%= @personil_detail.email %></h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

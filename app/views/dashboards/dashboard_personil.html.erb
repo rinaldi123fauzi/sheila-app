@@ -1,0 +1,120 @@
+<div class="wrapper wrapper-content">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="ibox-content">
+          <div>
+            <%
+              @getPersonil = PersonilDetail.find_by_user_id(current_user.id)
+            %>
+            <div class="col-md-10">
+              <h2 class="m-b-xs"><%= @getPersonil ? "Your Mine" : "All Personil" %></h2>
+            </div>
+            <div class="col-md-2">
+              <h2 class="m-b-xs">Timesheets</h2>
+            </div>
+            <small>Minutes</small>
+          </div>
+
+          <div>
+            <canvas id="lineChart" height="70"></canvas>
+          </div>
+
+          <div class="m-t-md">
+            <small>
+              <strong>Note:</strong> Grafik terhitung dari bulan sekarang ke satu bulan kebawah.
+            </small>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for :javascript do %>
+
+  <script type="text/javascript">
+
+      $(function() {
+
+          $(".bar_dashboard").peity("bar", {
+              fill: ["#1ab394", "#d7d7d7"],
+              width: 100
+          })
+
+          var lineData = {
+              labels: [
+                  <%
+                   start_date = (Date.today.to_date - 1.month).strftime("%Y-%m-%d")
+                   %>
+                  <%
+                      @getPersonil = PersonilDetail.find_by_user_id(current_user.id)
+                      if @getPersonil.present?
+                  %>
+                        <% @getAll = Timesheet.where('user_id = ? and tanggal >= ? and tanggal <= ?', current_user.id, start_date, Date.today.to_date).select('timesheets.tanggal').order('timesheets.tanggal ASC').group('timesheets.tanggal') %>
+                        <% @getAll.each do |f| %>
+                          <%= "#{f.tanggal.strftime("%d")}" %> + " <%= "#{f.tanggal.strftime("%B")}" %>",
+                        <% end %>
+                  <% else %>
+                        <% @getAll = Timesheet.where('tanggal >= ? and tanggal <= ?', start_date, Date.today.to_date).select('timesheets.tanggal').order('timesheets.tanggal ASC').group('timesheets.tanggal') %>
+                        <% @getAll.each do |f| %>
+                        <%= "#{f.tanggal.strftime("%d")}" %> + " <%= "#{f.tanggal.strftime("%B")}" %>",
+                        <% end %>
+                  <% end %>
+              ],
+              datasets: [
+                  {
+                      label: "Example dataset",
+                      fillColor: "rgba(26,179,148,0.5)",
+                      strokeColor: "rgba(26,179,148,0.7)",
+                      pointColor: "rgba(26,179,148,1)",
+                      pointStrokeColor: "#fff",
+                      pointHighlightFill: "#fff",
+                      pointHighlightStroke: "rgba(26,179,148,1)",
+                      data: [
+                          <%
+                             @getPersonil = PersonilDetail.find_by_user_id(current_user.id)
+                             if @getPersonil.present?
+                          %>
+                              <% @getAll = Timesheet.where('user_id = ? and tanggal >= ? and tanggal <= ?', current_user.id, start_date, Date.today.to_date).select('SUM(minute_total) as total').order('timesheets.tanggal ASC').group(:tanggal) %>
+                              <%  @getAll.each do |f| %>
+                              <%= "#{f.total}," %>
+                              <% end %>
+                          <% else %>
+                              <% @getAll = Timesheet.where('tanggal >= ? and tanggal <= ?', start_date, Date.today.to_date).select('SUM(minute_total) as total').order('timesheets.tanggal ASC').group(:tanggal) %>
+                              <%  @getAll.each do |f| %>
+                              <%= "#{f.total}," %>
+                              <% end %>
+                          <% end %>
+                      ]
+                  }
+              ]
+          };
+
+          var lineOptions = {
+              scaleShowGridLines: true,
+              scaleGridLineColor: "rgba(0,0,0,.05)",
+              scaleGridLineWidth: 1,
+              bezierCurve: true,
+              bezierCurveTension: 0.4,
+              pointDot: true,
+              pointDotRadius: 4,
+              pointDotStrokeWidth: 1,
+              pointHitDetectionRadius: 20,
+              datasetStroke: true,
+              datasetStrokeWidth: 2,
+              datasetFill: true,
+              responsive: true,
+          };
+
+
+          var ctx = document.getElementById("lineChart").getContext("2d");
+          var myNewChart = new Chart(ctx).Line(lineData, lineOptions);
+
+      });
+
+
+  </script>
+
+<% end %>

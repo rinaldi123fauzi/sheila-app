@@ -1,0 +1,78 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2>Form approve_status</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="">Home</a>
+      </li>
+      <li>
+        <a href="<%= approve_statuses_url %>">List</a>
+      </li>
+      <li class="active">
+        <strong>Detail</strong>
+      </li>
+    </ol>
+  </div>
+</div>
+<br>
+<div id="content">
+  <div class="page-header">
+    <%= link_to approve_statuses_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+    <% end %>
+    <%= link_to edit_approve_status_path(@approve_status), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+    <% end %>
+<!--    <h1>Show </h1>-->
+  </div>
+
+  <dl class="dl-horizontal">
+      <dt>Parent timesheet:</dt>
+      <dd><%= @approve_status.parent_timesheet_id %></dd>
+
+      <dt>Approve by:</dt>
+      <dd><%= @approve_status.approve_by %></dd>
+
+      <dt>Status1:</dt>
+      <dd><%= @approve_status.status1 %></dd>
+
+      <dt>Status2:</dt>
+      <dd><%= @approve_status.status2 %></dd>
+
+      <dt>Status3:</dt>
+      <dd><%= @approve_status.status3 %></dd>
+
+      <dt>Status4:</dt>
+      <dd><%= @approve_status.status4 %></dd>
+
+      <dt>Statuspm:</dt>
+      <dd><%= @approve_status.statuspm %></dd>
+
+      <dt>Info1:</dt>
+      <dd><%= @approve_status.info1 %></dd>
+
+      <dt>Info2:</dt>
+      <dd><%= @approve_status.info2 %></dd>
+
+      <dt>Info3:</dt>
+      <dd><%= @approve_status.info3 %></dd>
+
+      <dt>Info4:</dt>
+      <dd><%= @approve_status.info4 %></dd>
+
+      <dt>String:</dt>
+      <dd><%= @approve_status.string %></dd>
+
+      <dt>Infopm:</dt>
+      <dd><%= @approve_status.infopm %></dd>
+
+      <dt>Alasan:</dt>
+      <dd><%= @approve_status.alasan %></dd>
+
+      <dt>Deskripsi:</dt>
+      <dd><%= @approve_status.deskripsi %></dd>
+
+  </dl>
+</div>

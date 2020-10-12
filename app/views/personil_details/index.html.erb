@@ -1,0 +1,79 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2>Form personil_detail</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="">Home</a>
+      </li>
+      <li>
+        <a href="<%= personil_details_url %>">List</a>
+      </li>
+      <li class="active">
+        <strong>Form</strong>
+      </li>
+    </ol>
+  </div>
+</div>
+<br>
+<div id="content">
+  <div class="page-header">
+    <%= link_to new_personil_detail_path, class: 'btn btn-primary' do %>
+      <span class="glyphicon glyphicon-plus"></span>
+      New Personil detail
+    <% end %>
+    <!--    <h1>Listing </h1>-->
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover dataTables-example">
+      <thead>
+      <tr>
+        <th>No</th>
+        <th>Nama lengkap</th>
+        <th>Nama panggilan</th>
+        <th>Tim</th>
+        <th>Assignment place</th>
+        <th>Position</th>
+        <th>Nomor ponsel</th>
+        <th>Email</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @personil_details.each_with_index do |personil_detail, index| %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= personil_detail.nama_lengkap %></td>
+          <td><%= personil_detail.nama_panggilan %></td>
+          <td><%= personil_detail.tim %></td>
+          <td><%= personil_detail.nameassignmentplaces %></td>
+          <td><%= personil_detail.namepositions %></td>
+          <td><%= personil_detail.nomor_ponsel %></td>
+          <td><%= personil_detail.email %></td>
+          <td><%= link_to 'Show', personil_detail_path(personil_detail.idpersonildetails) %></td>
+          <td><%= link_to 'Edit', edit_personil_detail_path(personil_detail.idpersonildetails) %></td>
+          <td><%= link_to 'Destroy', personil_detail_path(personil_detail.idpersonildetails), method: :delete, data: {confirm: 'Are you sure?'} %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<% content_for :javascript do -%>
+  <script type="text/javascript" charset="utf-8">
+      $(function () {
+          $('.dataTables-example').dataTable({
+              dom: "<'myfilter'f><'mylength'l>t<'myfilter'i><'p'p>",
+              language: {
+                  search: "_INPUT_",
+                  searchPlaceholder: "Search..."
+              }
+          });
+
+      });
+  </script>
+<% end %>

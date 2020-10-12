@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  parent_timesheet_id: MyString
+  approve_status: one
+  approve_by: MyString
+  reject_by: MyString
+
+two:
+  parent_timesheet_id: MyString
+  approve_status: two
+  approve_by: MyString
+  reject_by: MyString

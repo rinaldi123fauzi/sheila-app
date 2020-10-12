@@ -1,0 +1,115 @@
+<div class="panel panel-default">
+  <div class="panel-heading">Form approve_status</div>
+  <div class="panel-body">
+<%= form_for(@approve_status, html: { class: "form-horizontal", role: "form" }) do |f| %>
+  <% if @approve_status.errors.any? %>
+    <div class="alert alert-danger alert-dismissable" role="alert">
+      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      <h4><%= pluralize(@approve_status.errors.count, "error") %> prohibited this approve_status from being saved:</h4>
+
+      <ul>
+      <% @approve_status.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :parent_timesheet_id, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :parent_timesheet_id, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :approve_by, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :approve_by, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :status1, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :status1, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :status2, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :status2, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :status3, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :status3, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :status4, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :status4, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :statuspm, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :statuspm, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :info1, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :info1, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :info2, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :info2, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :info3, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :info3, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :info4, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :info4, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :string, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :string, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :infopm, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :infopm, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :alasan, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :alasan, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :deskripsi, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :deskripsi, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit class: "btn btn-primary" %>
+    </div>
+  </div>
+<% end %>
+  </div>
+</div>

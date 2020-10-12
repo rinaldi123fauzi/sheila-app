@@ -1,0 +1,60 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2>Form timesheet</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="">Home</a>
+      </li>
+      <li>
+        <a href="<%= timesheets_url %>">List</a>
+      </li>
+      <li class="active">
+        <strong>Detail</strong>
+      </li>
+    </ol>
+  </div>
+</div>
+<br>
+<div id="content">
+  <div class="page-header">
+    <%= link_to timesheets_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+    <% end %>
+    <%= link_to edit_timesheet_path(@timesheet), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+    <% end %>
+<!--    <h1>Show </h1>-->
+  </div>
+
+  <dl class="dl-horizontal">
+      <dt>Parent:</dt>
+      <dd><%= @timesheet.parent_id %></dd>
+
+      <dt>User:</dt>
+      <dd><%= @timesheet.user %></dd>
+
+      <dt>Tanggal:</dt>
+      <dd><%= @timesheet.tanggal %></dd>
+
+      <dt>Activity title:</dt>
+      <dd><%= @timesheet.activity_title %></dd>
+
+      <dt>Isi aktivitas:</dt>
+      <dd><%= @timesheet.isi_aktivitas %></dd>
+
+      <dt>Jam mulai:</dt>
+      <dd><%= @timesheet.jam_mulai %></dd>
+
+      <dt>Jam selesai:</dt>
+      <dd><%= @timesheet.jam_selesai %></dd>
+
+      <dt>Lokasi kerja:</dt>
+      <dd><%= @timesheet.lokasi_kerja %></dd>
+
+      <dt>Activity output:</dt>
+      <dd><%= @timesheet.activity_output %></dd>
+
+  </dl>
+</div>

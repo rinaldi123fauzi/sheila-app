@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  parent_id: MyString
+  user: one
+  tanggal: 2020-09-17
+  activity_title: one
+  isi_aktivitas: MyString
+  jam_mulai: 2020-09-17 16:51:11
+  jam_selesai: 2020-09-17 16:51:11
+  lokasi_kerja: MyString
+  activity_output: one
+
+two:
+  parent_id: MyString
+  user: two
+  tanggal: 2020-09-17
+  activity_title: two
+  isi_aktivitas: MyString
+  jam_mulai: 2020-09-17 16:51:11
+  jam_selesai: 2020-09-17 16:51:11
+  lokasi_kerja: MyString
+  activity_output: two

@@ -1,0 +1,106 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="side-menu">
+            <li class="nav-header">
+                <div class="dropdown profile-element">
+                    <span>
+                      <% @getPhoto = PersonilDetail.find_by_user_id(current_user.id) %>
+                      <% if @getPhoto.present? %>
+                        <%= image_tag @getPhoto.photo_personil, class: "img-circle img-responsive", alt: "image" %>
+                      <% end %>
+                    </span>
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <span class="clear">
+                            <span class="block m-t-xs">
+                                <strong class="font-bold"><%= current_user.name %></strong>
+                              <% @roleAssign = RoleAssignment.left_outer_joins(:user,:role).where(user_id: current_user.id).select('roles.name AS nameroles') %>
+                            </span> <span class="text-muted text-xs block"><%=  @roleAssign.each_with_index.map { |role| "#{role.nameroles}" }.join(", ") %> <b class="caret"></b></span>
+                            <% @getAssignmentPlace = User.find(current_user.id) %>
+                            <strong class="font-bold"><%= @getAssignmentPlace.assignment_place.present? ? @getAssignmentPlace.assignment_place.name : "" %></strong>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu animated fadeInRight m-t-xs" style="background-color: transparent;">
+                      <button class="btn btn-danger dim" type="button" data-toggle="modal" data-target="#myModal4">
+                        <i class="fa fa-close"></i>Change Password
+                      </button>
+                    </ul>
+                    <div class="modal inmodal" id="myModal4" tabindex="-1" role="dialog" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content animated fadeIn">
+                          <form action="<%= changePassword_users_path %>" method="get" class="widget-body">
+                            <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                              <h4 class="modal-title">Change Password</h4>
+                            </div>
+                            <div class="modal-body">
+                              <input type="hidden" value="<%= current_user.id %>" name="id">
+                              <label for="">New Password</label>
+                              <input type="password" class="form-control" name="password" required>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                              <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="logo-element">
+                    IN+
+                </div>
+            </li>
+          <li class="landing_link">
+            <%= link_to root_path do %>
+              <i class="fa fa-star"></i> <span class="nav-label">Landing page</span>
+            <% end %>
+          </li>
+          <% if current_user.roles.any? { |r| r.name == "Superadmin" }  %>
+            <li class="dropdown <%= "active" if is_active_controller('history_assignments') || is_active_controller('activity_outputs') || is_active_controller('activity_titles') || is_active_controller('approve_statuses') || is_active_controller('history_timesheets') || is_active_controller('positions') || is_active_controller('service_types') %>">
+              <a href=""><i class="fa fa-database"></i> <span class="nav-label">Data Management</span> <span class="fa arrow"></span></a>
+              <ul class="nav nav-second-level">
+                <li class="<%= "active" if is_active_controller('activity_outputs') && is_active_action('index') %>"><%= link_to "Output Aktivitas", activity_outputs_url %></li>
+                <li class="<%= "active" if is_active_controller('activity_titles') && is_active_action('index') %>"><%= link_to "Judul Aktivitas", activity_titles_url %></li>
+                <li class="<%= "active" if is_active_controller('approve_statuses') && is_active_action('index') %>"><%= link_to "Status Approve", approve_statuses_url %></li>
+                <li class="<%= "active" if is_active_controller('history_timesheets') && is_active_action('index') %>"><%= link_to "Timesheets History", history_timesheets_url %></li>
+                <li class="<%= "active" if is_active_controller('history_assignments') && is_active_action('index') %>"><%= link_to "Assignment History", history_assignments_url %></li>
+                <li class="<%= "active" if is_active_controller('positions') && is_active_action('index') %>"><%= link_to "Jabatan", positions_url %></li>
+                <li class="<%= "active" if is_active_controller('service_types') && is_active_action('index') %>"><%= link_to "Tipe Layanan", service_types_url %></li>
+              </ul>
+            </li>
+            <li class="dropdown <%= "active" if is_active_controller('users') || is_active_controller('roles') %>">
+              <a href=""><i class="fa fa-database"></i> <span class="nav-label">User Management</span> <span class="fa arrow"></span></a>
+              <ul class="nav nav-second-level">
+                <li class="<%= "active" if is_active_controller('users') && is_active_action('index') %>"><%= link_to "Users", users_url %></li>
+                <li class="<%= "active" if is_active_controller('roles') && is_active_action('index') %>"><%= link_to "Roles", roles_url %></li>
+              </ul>
+            </li>
+            <li class="dropdown <%= is_active_controller('personil_details') %>">
+              <a href=""><i class="fa fa-users"></i> <span class="nav-label">Personil Detail</span> <span class="fa arrow"></span></a>
+              <ul class="nav nav-second-level">
+                <li class="<%= "active" if is_active_controller('personil_details') && is_active_action('new') %>"><%= link_to "Tambah", new_personil_detail_url %></li>
+                <li class="<%= "active" if is_active_controller('personil_details') && is_active_action('index') %>"><%= link_to "List", personil_details_url %></li>
+              </ul>
+            </li>
+          <% end %>
+            <li class="<%= is_active_controller('timesheets') %>">
+              <a href=""><i class="fa fa-clock-o"></i> <span class="nav-label">Timesheet</span> <span class="fa arrow"></span></a>
+              <ul class="nav nav-second-level">
+                <% if current_user.roles.any? { |r| r.name == "Personil ASANTIE" } %>
+                  <li class="<%= "active" if is_active_controller('timesheets') && is_active_action('new') %>"><%= link_to "Tambah Sheet", new_timesheet_path %></li>
+                <% end %>
+                <li class="<%= "active" if is_active_controller('timesheets') && is_active_action('index') %>"><%= link_to "List", timesheets_url %></li>
+              </ul>
+            </li>
+          <li class="<%= is_active_controller('assignments') %>">
+            <a href=""><i class="fa fa-tasks"></i> <span class="nav-label">Assignment</span> <span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level">
+              <li class="<%= "active" if is_active_controller('assignments') && is_active_action('new') %>"><%= link_to "Tambah Tugas", new_assignment_path %></li>
+              <li class="<%= "active" if is_active_controller('assignments') && is_active_action('index') %>"><%= link_to "List", assignments_url %></li>
+            </ul>
+          </li>
+        </ul>
+
+    </div>
+</nav>
