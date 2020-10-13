@@ -263,17 +263,17 @@
               <p class="small">
                 <%= @assignment.first.lama_penugasan.to_s %>
               </p>
-              <p class="small font-bold">
-                <!--        <span><i class="fa fa-circle text-warning"></i> High priority</span>-->
-                <span>File</span>
-                <br>
-                <% @fileAssignment.file_assignment.each do |file_assignment| %>
-            <span style="margin-right: 10px">
-              <%= link_to "#{["#{file_assignment.filename}"]}", rails_blob_path(file_assignment, disposition: 'preview'), :target => "_blank" %>
-              <br>
-            </span>
-                <% end %>
-              </p>
+<!--              <p class="small font-bold">-->
+<!--                     <span><i class="fa fa-circle text-warning"></i> High priority</span>-->
+<!--                <span>File</span>-->
+<!--                <br>-->
+                <%# @fileAssignment.file_assignment.each do |file_assignment| %>
+<!--            <span style="margin-right: 10px">-->
+              <%#= link_to "#{["#{file_assignment.filename}"]}", rails_blob_path(file_assignment, disposition: 'preview'), :target => "_blank" %>
+<!--              <br>-->
+<!--            </span>-->
+                <%# end %>
+<!--              </p>-->
             </div>
             <div class="col-md-6">
               <h4>Status Perjalanan Dinas</h4>
